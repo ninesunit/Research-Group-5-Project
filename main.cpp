@@ -466,3 +466,14 @@ void viewTripHistory(const vector<TripRecord>& history) {
 
     double averageDistance = totalDistance / history.size();
     double averageCost = totalCost / history.size();
+
+    cout << "\n========================================\n";
+    cout << "             SESSION TOTALS             \n";
+    cout << "========================================\n";
+    cout << "Total Trips      : " << history.size() << "\n";
+    cout << "Total Distance   : " << totalDistance << " km\n";
+    cout << "Total Cost       : RM " << totalCost << "\n";
+    cout << "Average Distance : " << averageDistance << " km\n";
+    cout << "Average Cost     : RM " << averageCost << "\n";
+    cout << "========================================\n";
+}
