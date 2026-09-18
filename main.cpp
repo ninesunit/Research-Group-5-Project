@@ -113,3 +113,54 @@ void clearInputBuffer() {
     cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
+
+int getValidInt(int minVal, int maxVal) {
+    int input;
+    while (true) {
+        if (cin >> input) {
+            if (input >= minVal && input <= maxVal) {
+                return input;
+            }
+        }
+        cout << "Invalid input. Enter an integer between " << minVal << " and " << maxVal << ": ";
+        clearInputBuffer();
+    }
+}
+
+double getValidDoubleRange(double minVal, double maxVal) {
+    double input;
+    while (true) {
+        if (cin >> input) {
+            if (input >= minVal && input <= maxVal) {
+                return input;
+            }
+        }
+        cout << "Invalid input. Enter a value between " << minVal << " and " << maxVal << ": ";
+        clearInputBuffer();
+    }
+}
+
+
+double calculateHaversine(double lat1, double lon1, double lat2, double lon2) {
+    double dLat = (lat2 - lat1) * M_PI / 180.0;
+    double dLon = (lon2 - lon1) * M_PI / 180.0;
+    lat1 = lat1 * M_PI / 180.0;
+    lat2 = lat2 * M_PI / 180.0;
+
+    double a = pow(sin(dLat / 2.0), 2) + pow(sin(dLon / 2.0), 2) * cos(lat1) * cos(lat2);
+    double c = 2.0 * asin(sqrt(a));
+    return 6371.0 * c;
+}
+
+
+double calculateBearing(double lat1, double lon1, double lat2, double lon2) {
+    double dLon = (lon2 - lon1) * M_PI / 180.0;
+    lat1 = lat1 * M_PI / 180.0;
+    lat2 = lat2 * M_PI / 180.0;
+
+    double y = sin(dLon) * cos(lat2);
+    double x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
+    double theta = atan2(y, x);
+    
+    return fmod((theta * 180.0 / M_PI) + 360.0, 360.0);
+}
