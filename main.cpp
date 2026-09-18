@@ -433,3 +433,36 @@ void checkSatelliteSignal(double& errorMargin, int& activeSats, double originLat
 
     cout << "========================================\n";
 }
+
+void viewTripHistory(const vector<TripRecord>& history) {
+    cout << "\n========================================\n";
+    cout << "              TRIP HISTORY              \n";
+    cout << "========================================\n";
+    if (history.empty()) {
+        cout << "No trip history recorded in this session.\n";
+        return;
+    }
+
+    double totalDistance = 0.0;
+    double totalCost = 0.0;
+
+    for (size_t i = 0; i < history.size(); ++i) {
+        cout << "Trip " << (i + 1) << " | " << history[i].originName << " -> " << history[i].destinationName << "\n"
+             << "   Dir: " << history[i].compassDir << " | Mode: " << history[i].mode
+             << " | Dist: " << history[i].distanceKm << " km ";
+             
+        if (history[i].errorMarginKm < 0.0) {
+            cout << "(Error: N/A)\n";
+        } else {
+            cout << "(+/- " << setprecision(3) << history[i].errorMarginKm << setprecision(2) << " km)\n";
+        }
+             
+        cout << "   Time: " << history[i].hours << "h " << history[i].minutes << "m"
+             << " | Cost: RM " << history[i].cost << "\n";
+        
+        totalDistance += history[i].distanceKm;
+        totalCost += history[i].cost;
+    }
+
+    double averageDistance = totalDistance / history.size();
+    double averageCost = totalCost / history.size();
