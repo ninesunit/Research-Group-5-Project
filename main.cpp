@@ -164,3 +164,37 @@ double calculateBearing(double lat1, double lon1, double lat2, double lon2) {
     
     return fmod((theta * 180.0 / M_PI) + 360.0, 360.0);
 }
+
+string getCompassDirection(double bearing) {
+    const char* directions[] = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N"};
+    int index = static_cast<int>(round(bearing / 22.5));
+    return directions[index];
+}
+
+string generateNMEA(double lat, double lon, int sats, double hdop) {
+    char buffer[128];
+    char latDir = (lat >= 0) ? 'N' : 'S';
+    char lonDir = (lon >= 0) ? 'E' : 'W';
+    
+    double latAbs = fabs(lat);
+    double lonAbs = fabs(lon);
+    
+    int latDeg = static_cast<int>(latAbs);
+    double latMin = (latAbs - latDeg) * 60.0;
+    
+    int lonDeg = static_cast<int>(lonAbs);
+    double lonMin = (lonAbs - lonDeg) * 60.0;
+    
+    snprintf(buffer, sizeof(buffer), "GPGGA,120000.00,%02d%07.4f,%c,%03d%07.4f,%c,1,%02d,%03.1f,50.0,M,0.0,M,,",
+             latDeg, latMin, latDir, lonDeg, lonMin, lonDir, sats, hdop);
+
+   
+    unsigned char checksum = 0;
+    for (int i = 0; buffer[i] != '\0'; ++i) {
+        checksum ^= buffer[i];
+    }
+    
+    char finalBuffer[150];
+    snprintf(finalBuffer, sizeof(finalBuffer), "$%s*%02X", buffer, checksum);
+    return string(finalBuffer);
+}
