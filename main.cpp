@@ -400,3 +400,36 @@ void checkSatelliteSignal(double& errorMargin, int& activeSats, double originLat
     double hdop = 0.0;
 
     if (activeSats < 4) {
+ 
+        errorMargin = -1.0;
+        hdop = 99.9;
+        cout << "Fix Type             : No Fix\n";
+        cout << "Status               : Insufficient geometry for 3D positioning.\n";
+        cout << "Estimated Error      : N/A\n";
+        cout << "System Recommendation: Move to an open area with clear sky view.\n";
+    } else if (activeSats == 4) {
+        errorMargin = 30.0;
+        hdop = 4.5;
+        cout << "Fix Type             : Weak 3D Fix\n";
+        cout << "Status               : Minimum operational threshold met.\n";
+        cout << "Estimated Error      : +/- 30.0 meters.\n";
+    } else if (activeSats >= 5 && activeSats <= 7) {
+        errorMargin = 10.0;
+        hdop = 1.5;
+        cout << "Fix Type             : Standard 3D Fix\n";
+        cout << "Status               : Reliable positioning available.\n";
+        cout << "Estimated Error      : +/- 10.0 meters.\n";
+    } else {
+        errorMargin = 3.0;
+        hdop = 0.8;
+        cout << "Fix Type             : High Accuracy 3D Fix\n";
+        cout << "Status               : Optimal geometry achieved.\n";
+        cout << "Estimated Error      : +/- 3.0 meters.\n";
+    }
+
+    if (activeSats >= 4) {
+        cout << "NMEA Output          : " << generateNMEA(originLat, originLon, activeSats, hdop) << "\n";
+    }
+
+    cout << "========================================\n";
+}
