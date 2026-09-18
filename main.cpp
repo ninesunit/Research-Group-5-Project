@@ -348,3 +348,28 @@ if (saEnabled) {
     cout << "Estimated Cost  : RM " << totalCost << "\n";
     cout << "========================================\n";
     cout << "System Recommendation:\n";
+
+if (trafficChoice == 3 && (modeChoice == 1 || modeChoice == 2)) {
+        cout << "Traffic is heavy. Consider taking the bus or using rail transit to avoid congestion.\n";
+    } else if (perceivedDistance <= 2.0 && modeChoice != 4) {
+        cout << "Short distance route detected. Walking is zero-cost and environmentally friendly.\n";
+    } else if (modeChoice == 4 && perceivedDistance > 10.0) {
+        cout << "Long walking distance detected. Consider motorized transport for safety and efficiency.\n";
+    } else {
+        cout << "Selected route and transport mode are optimal for current conditions.\n";
+    }
+    cout << "========================================\n";
+
+    TripRecord record;
+    record.originName = originName;
+    record.destinationName = selectedDest.name;
+    record.mode = modeName;
+    record.distanceKm = perceivedDistance;
+    record.errorMarginKm = displayErrorMarginKm;
+    record.trafficLevel = trafficName;
+    record.compassDir = compassDir;
+    record.hours = hours;
+    record.minutes = minutes;
+    record.cost = totalCost;
+    history.push_back(record);
+}
