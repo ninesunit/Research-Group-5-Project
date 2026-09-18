@@ -72,7 +72,7 @@ cout << fixed << setprecision(2);
     do {
         displayMainMenu(saEnabled);
         choice = getValidInt(1, 7);
-
+//SWITCH CASE
         switch (choice) {
             case 1:
                 if (activeSatellites < 4) {
