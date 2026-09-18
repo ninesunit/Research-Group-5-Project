@@ -265,3 +265,60 @@ if (saEnabled) {
     
     double perceivedDistance = calculateHaversine(perceivedLat, perceivedLon, selectedDest.lat, selectedDest.lon);
 
+double displayErrorMarginKm = errorMargin >= 0.0 ? errorMargin / 1000.0 : -1.0;
+    if (saEnabled && displayErrorMarginKm >= 0.0) {
+        displayErrorMarginKm += 0.10; 
+    }
+
+    
+    cout << "\nSelect Transport Mode:\n";
+    cout << "1. Car (Base speed: 60 km/h, Cost: RM 0.60/km)\n";
+    cout << "2. Motorcycle (Base speed: 50 km/h, Cost: RM 0.25/km)\n";
+    cout << "3. Bus (Base speed: 40 km/h, Fare: RM 0.15/km)\n";
+    cout << "4. Walking (Base speed: 5 km/h, Cost: RM 0.00/km)\n";
+    cout << "Enter mode choice (1 to 4): ";
+    int modeChoice = getValidInt(1, 4);
+
+    string modeName;
+    double baseSpeed = 0.0;
+    double costPerKm = 0.0;
+
+    switch (modeChoice) {
+        case 1: modeName = "Car"; baseSpeed = 60.0; costPerKm = 0.60; break;
+        case 2: modeName = "Motorcycle"; baseSpeed = 50.0; costPerKm = 0.25; break;
+        case 3: modeName = "Bus"; baseSpeed = 40.0; costPerKm = 0.15; break;
+        case 4: modeName = "Walking"; baseSpeed = 5.0; costPerKm = 0.00; break;
+    }
+
+    cout << "\nSelect Traffic Level:\n";
+    cout << "1. Light (100% normal speed)\n";
+    cout << "2. Moderate (75% normal speed)\n";
+    cout << "3. Heavy (40% normal speed)\n";
+    cout << "Enter traffic level (1 to 3): ";
+    int trafficChoice = getValidInt(1, 3);
+
+    string trafficName;
+    double speedMultiplier = 1.0;
+
+    if (trafficChoice == 1) { trafficName = "Light"; speedMultiplier = 1.00; } 
+    else if (trafficChoice == 2) { trafficName = "Moderate"; speedMultiplier = 0.75; } 
+    else { trafficName = "Heavy"; speedMultiplier = 0.40; }
+
+    double effectiveSpeed = baseSpeed * speedMultiplier;
+    double totalTimeHours = perceivedDistance / effectiveSpeed;
+    
+    int hours = static_cast<int>(totalTimeHours);
+    int minutes = static_cast<int>(round((totalTimeHours - hours) * 60.0));
+    
+    if (minutes == 60) {
+        hours += 1;
+        minutes = 0;
+    }
+
+    double totalCost = perceivedDistance * costPerKm;
+
+    cout << "\n========================================\n";
+    cout << "            TRIP SUMMARY                \n";
+    cout << "========================================\n";
+    cout << "Destination     : " << selectedDest.name << "\n";
+    cout << "Bearing         : " << fixed << setprecision(1) << bearing << " deg (" << compassDir << ")\n";
