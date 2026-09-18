@@ -25,3 +25,35 @@ struct TripRecord {
     int minutes;
     double cost;
 };
+
+struct Destination {
+    string name;
+    double lat;
+    double lon;
+};
+
+void clearInputBuffer();
+int getValidInt(int minVal, int maxVal);
+double getValidDoubleRange(double minVal, double maxVal);
+double calculateHaversine(double lat1, double lon1, double lat2, double lon2);
+double calculateBearing(double lat1, double lon1, double lat2, double lon2);
+string getCompassDirection(double bearing);
+string generateNMEA(double lat, double lon, int sats, double hdop);
+void displayMainMenu(bool saEnabled);
+void planTrip(vector<TripRecord>& history, const vector<Destination>& destinations, double originLat, double originLon, string originName, bool saEnabled, double errorMargin);
+void viewDestinations(const vector<Destination>& destinations, double originLat, double originLon);
+void checkSatelliteSignal(double& errorMargin, int& activeSats, double originLat, double originLon);
+void setCurrentPosition(double& originLat, double& originLon, string& originName);
+void viewTripHistory(const vector<TripRecord>& history);
+
+int main() {
+    vector<TripRecord> tripHistory;
+    int choice = 0;
+
+    double currentLat = 2.9278;
+    double currentLon = 101.6418;
+    string currentPositionName = "MMU Cyberjaya";
+
+    bool saEnabled = false;
+    double currentErrorMargin = 5.0; 
+    int activeSatellites = 6; 
