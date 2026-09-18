@@ -57,3 +57,13 @@ int main() {
     bool saEnabled = false;
     double currentErrorMargin = 5.0; 
     int activeSatellites = 6; 
+
+ vector<Destination> localDestinations = {
+        {"DPULZE Shopping Centre", 2.9223, 101.6510},
+        {"KLCC", 3.1578, 101.7115},
+        {"KLIA", 2.7456, 101.7099},
+        {"IOI City Mall", 2.9696, 101.7130},
+        {"Cheras Leisure Mall", 3.0888, 101.7404},
+        {"Malacca Jonker Street", 2.1953, 102.2476}
+    };
+
