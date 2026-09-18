@@ -198,3 +198,18 @@ string generateNMEA(double lat, double lon, int sats, double hdop) {
     snprintf(finalBuffer, sizeof(finalBuffer), "$%s*%02X", buffer, checksum);
     return string(finalBuffer);
 }
+
+void displayMainMenu(bool saEnabled) {
+    cout << "\n========================================\n";
+    cout << "       GPS TRIP PLANNER & ASSISTANT     \n";
+    cout << "========================================\n";
+    cout << "1. Plan a trip\n";
+    cout << "2. View destinations\n";
+    cout << "3. Satellite signal check\n";
+    cout << "4. Set current position\n";
+    cout << "5. Toggle Selective Availability [" << (saEnabled ? "ON" : "OFF") << "]\n";
+    cout << "6. Trip history\n";
+    cout << "7. Exit\n";
+    cout << "========================================\n";
+    cout << "Enter your choice (1 to 7): ";
+}
