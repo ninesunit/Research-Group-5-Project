@@ -213,3 +213,44 @@ void displayMainMenu(bool saEnabled) {
     cout << "========================================\n";
     cout << "Enter your choice (1 to 7): ";
 }
+
+void setCurrentPosition(double& originLat, double& originLon, string& originName) {
+    cout << "\n========================================\n";
+    cout << "          SET CURRENT POSITION          \n";
+    cout << "========================================\n";
+    cout << "Enter Latitude (-90.0 to 90.0): ";
+    originLat = getValidDoubleRange(-90.0, 90.0);
+    
+    cout << "Enter Longitude (-180.0 to 180.0): ";
+    originLon = getValidDoubleRange(-180.0, 180.0);
+    
+    cout << "Enter location name identifier: ";
+    cin >> ws;
+    getline(cin, originName);
+    
+    cout << "\nOrigin updated successfully to " << originName << ".\n";
+    cout << "========================================\n";
+}
+
+void planTrip(vector<TripRecord>& history, const vector<Destination>& destinations, double originLat, double originLon, string originName, bool saEnabled, double errorMargin) {
+    cout << "\n========================================\n";
+    cout << "            TRIP PLANNER                \n";
+    cout << "========================================\n";
+    cout << "Origin: " << originName << " [Lat: " << setprecision(4) << originLat << ", Lon: " << originLon << "]\n";
+    cout << setprecision(2);
+    
+    for (size_t i = 0; i < destinations.size(); ++i) {
+        double dist = calculateHaversine(originLat, originLon, destinations[i].lat, destinations[i].lon);
+        cout << (i + 1) << ". " << destinations[i].name << " (" << dist << " km)\n";
+    }
+    
+    cout << "Enter choice (1 to " << destinations.size() << "): ";
+    int destChoice = getValidInt(1, static_cast<int>(destinations.size()));
+    Destination selectedDest = destinations[destChoice - 1];
+    
+    double trueDistance = calculateHaversine(originLat, originLon, selectedDest.lat, selectedDest.lon);
+    double bearing = calculateBearing(originLat, originLon, selectedDest.lat, selectedDest.lon);
+    string compassDir = getCompassDirection(bearing);
+    
+    double perceivedLat = originLat;
+    double perceivedLon = originLon;
