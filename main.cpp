@@ -254,3 +254,14 @@ void planTrip(vector<TripRecord>& history, const vector<Destination>& destinatio
     
     double perceivedLat = originLat;
     double perceivedLon = originLon;
+
+if (saEnabled) {
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_real_distribution<> dist(-0.0009, 0.0009); 
+        perceivedLat += dist(gen);
+        perceivedLon += dist(gen);
+    }
+    
+    double perceivedDistance = calculateHaversine(perceivedLat, perceivedLon, selectedDest.lat, selectedDest.lon);
+
