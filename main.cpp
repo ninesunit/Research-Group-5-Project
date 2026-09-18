@@ -373,3 +373,30 @@ if (trafficChoice == 3 && (modeChoice == 1 || modeChoice == 2)) {
     record.cost = totalCost;
     history.push_back(record);
 }
+
+void viewDestinations(const vector<Destination>& destinations, double originLat, double originLon) {
+    cout << "\n========================================\n";
+    cout << "        SAVED DESTINATIONS LIST         \n";
+    cout << "========================================\n";
+    for (size_t i = 0; i < destinations.size(); ++i) {
+        double dist = calculateHaversine(originLat, originLon, destinations[i].lat, destinations[i].lon);
+        double bearing = calculateBearing(originLat, originLon, destinations[i].lat, destinations[i].lon);
+        cout << (i + 1) << ". " << destinations[i].name 
+             << " [Lat: " << setprecision(4) << destinations[i].lat << ", Lon: " << destinations[i].lon << "]\n"
+             << setprecision(2) << "   Distance: " << dist << " km | Bearing: " << getCompassDirection(bearing) << "\n";
+    }
+    cout << "========================================\n";
+}
+
+void checkSatelliteSignal(double& errorMargin, int& activeSats, double originLat, double originLon) {
+    cout << "\n========================================\n";
+    cout << "       GPS SATELLITE SIGNAL STATUS      \n";
+    cout << "========================================\n";
+    cout << "Enter number of satellites currently in view (0 to 32): ";
+    activeSats = getValidInt(0, 32);
+
+    cout << "\nSatellites Locked    : " << activeSats << "\n";
+    
+    double hdop = 0.0;
+
+    if (activeSats < 4) {
