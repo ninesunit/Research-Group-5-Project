@@ -322,3 +322,29 @@ double displayErrorMarginKm = errorMargin >= 0.0 ? errorMargin / 1000.0 : -1.0;
     cout << "========================================\n";
     cout << "Destination     : " << selectedDest.name << "\n";
     cout << "Bearing         : " << fixed << setprecision(1) << bearing << " deg (" << compassDir << ")\n";
+
+if (saEnabled) {
+        int saErrorMeters = static_cast<int>(round(fabs(perceivedDistance - trueDistance) * 1000.0));
+        cout << "True Distance   : " << setprecision(2) << trueDistance << " km\n";
+        if (displayErrorMarginKm < 0.0) {
+            cout << "Reported        : " << setprecision(2) << perceivedDistance << " km (Error: N/A)   [SA error: " << saErrorMeters << " m]\n";
+        } else {
+            cout << "Reported        : " << setprecision(2) << perceivedDistance << " km (+/- " << setprecision(3) << displayErrorMarginKm << " km)   [SA error: " << saErrorMeters << " m]\n";
+        }
+        cout << "[SA ALERT] Intentional signal degradation active.\n";
+    } else {
+        if (displayErrorMarginKm < 0.0) {
+            cout << "Distance        : " << setprecision(2) << perceivedDistance << " km (Error: N/A)\n";
+        } else {
+            cout << "Distance        : " << setprecision(2) << perceivedDistance << " km (+/- " << setprecision(3) << displayErrorMarginKm << " km)\n";
+        }
+    }
+
+    cout << setprecision(2);
+    cout << "Transport Mode  : " << modeName << "\n";
+    cout << "Traffic Level   : " << trafficName << "\n";
+    cout << "Effective Speed : " << effectiveSpeed << " km/h\n";
+    cout << "Estimated ETA   : " << hours << " hrs " << minutes << " mins\n";
+    cout << "Estimated Cost  : RM " << totalCost << "\n";
+    cout << "========================================\n";
+    cout << "System Recommendation:\n";
