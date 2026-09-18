@@ -67,3 +67,49 @@ int main() {
         {"Malacca Jonker Street", 2.1953, 102.2476}
     };
 
+cout << fixed << setprecision(2);
+
+    do {
+        displayMainMenu(saEnabled);
+        choice = getValidInt(1, 7);
+
+        switch (choice) {
+            case 1:
+                if (activeSatellites < 4) {
+                    cout << "\nError: Insufficient satellite geometry for 3D fix. Cannot calculate routes.\n";
+                } else {
+                    planTrip(tripHistory, localDestinations, currentLat, currentLon, currentPositionName, saEnabled, currentErrorMargin);
+                }
+                break;
+            case 2:
+                viewDestinations(localDestinations, currentLat, currentLon);
+                break;
+            case 3:
+                checkSatelliteSignal(currentErrorMargin, activeSatellites, currentLat, currentLon);
+                break;
+            case 4:
+                setCurrentPosition(currentLat, currentLon, currentPositionName);
+                break;
+            case 5:
+                saEnabled = !saEnabled;
+                cout << "\nSelective Availability: " << (saEnabled ? "ENABLED" : "DISABLED") << "\n";
+                break;
+            case 6:
+                viewTripHistory(tripHistory);
+                break;
+            case 7:
+                cout << "\nExiting GPS Navigation Assistant. System offline.\n";
+                break;
+            default:
+                cout << "\nInvalid choice.\n";
+                break;
+        }
+    } while (choice != 7);
+
+    return 0;
+}
+
+void clearInputBuffer() {
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
